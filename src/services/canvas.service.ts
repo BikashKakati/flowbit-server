@@ -2,6 +2,21 @@ import { Canvas } from '../models/Canvas';
 import { Flow } from '../models/Flow';
 import mongoose from 'mongoose';
 
+const removeNulls = (obj: any): any => {
+    if (Array.isArray(obj)) {
+        return obj.map(removeNulls);
+    } else if (obj !== null && typeof obj === 'object') {
+        const result: any = {};
+        for (const [key, value] of Object.entries(obj)) {
+            if (value !== null) {
+                result[key] = removeNulls(value);
+            }
+        }
+        return result;
+    }
+    return obj;
+};
+
 export const canvasService = {
     async getCanvas(userId: string, flowId: string) {
         const flow = await Flow.findOne({ id: flowId, userId: new mongoose.Types.ObjectId(userId) });
@@ -14,7 +29,11 @@ export const canvasService = {
             return { nodes: [], edges: [], updatedAt: null };
         }
 
-        return { nodes: canvas.nodes, edges: canvas.edges, updatedAt: canvas.updatedAt };
+        return {
+            nodes: canvas.nodes.map(removeNulls),
+            edges: canvas.edges.map(removeNulls),
+            updatedAt: canvas.updatedAt
+        };
     },
 
     async saveCanvas(userId: string, flowId: string, payload: { nodes: any[], edges: any[] }) {

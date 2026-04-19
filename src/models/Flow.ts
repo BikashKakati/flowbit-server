@@ -14,6 +14,6 @@ const FlowSchema = new Schema<IFlow>({
     spaceId: { type: String, required: true, index: true },
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
-}, { timestamps: true });
+}, { timestamps: true, _id: false });
 
 export const Flow = mongoose.model<IFlow>('Flow', FlowSchema);

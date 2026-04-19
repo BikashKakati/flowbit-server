@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface IFlow extends Document {
+export interface IFlow extends Document<string> {
+    _id: string; // explicitly override _id type to string
     id: string; // client UUID
     spaceId: string; // client UUID
     userId: mongoose.Types.ObjectId;
@@ -10,10 +11,11 @@ export interface IFlow extends Document {
 }
 
 const FlowSchema = new Schema<IFlow>({
+    _id: { type: String, default: function (this: any) { return this.id; } },
     id: { type: String, required: true, unique: true },
     spaceId: { type: String, required: true, index: true },
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     name: { type: String, required: true },
-}, { timestamps: true, _id: false });
+}, { timestamps: true });
 
 export const Flow = mongoose.model<IFlow>('Flow', FlowSchema);

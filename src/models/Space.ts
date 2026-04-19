@@ -1,6 +1,7 @@
 import mongoose, { Schema, Document } from 'mongoose';
 
-export interface ISpace extends Document {
+export interface ISpace extends Document<string> {
+    _id: string; // explicitly override _id type to string
     id: string; // client UUID
     userId: mongoose.Types.ObjectId;
     name: string;
@@ -9,9 +10,10 @@ export interface ISpace extends Document {
 }
 
 const SpaceSchema = new Schema<ISpace>({
+    _id: { type: String, default: function (this: any) { return this.id; } },
     id: { type: String, required: true, unique: true },
     userId: { type: Schema.Types.ObjectId, ref: 'User', required: true, index: true },
     name: { type: String, required: true },
-}, { timestamps: true, _id: false });
+}, { timestamps: true });
 
 export const Space = mongoose.model<ISpace>('Space', SpaceSchema);

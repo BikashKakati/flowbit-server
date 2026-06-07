@@ -55,4 +55,4 @@ const CanvasSchema = new Schema<ICanvas>({
     edges: [EdgeSchema]
 }, { timestamps: true });
 
-export const Canvas = mongoose.model<ICanvas>('Canvas', CanvasSchema);
+export const Canvas = mongoose.models.Canvas || mongoose.model<ICanvas>('Canvas', CanvasSchema);

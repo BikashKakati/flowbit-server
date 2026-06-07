@@ -16,4 +16,4 @@ const SpaceSchema = new Schema<ISpace>({
     name: { type: String, required: true },
 }, { timestamps: true });
 
-export const Space = mongoose.model<ISpace>('Space', SpaceSchema);
+export const Space = mongoose.models.Space || mongoose.model<ISpace>('Space', SpaceSchema);

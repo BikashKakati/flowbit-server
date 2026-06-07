@@ -18,4 +18,4 @@ const FlowSchema = new Schema<IFlow>({
     name: { type: String, required: true },
 }, { timestamps: true });
 
-export const Flow = mongoose.model<IFlow>('Flow', FlowSchema);
+export const Flow = mongoose.models.Flow || mongoose.model<IFlow>('Flow', FlowSchema);
